@@ -55,7 +55,7 @@ fn main() {
 
 
     // Create a Glutin window.
-    let mut window: Window = WindowSettings::new("spinning-square", [600, 600])
+    let mut window: Window = WindowSettings::new("displayMouse", [600, 600])
         .graphics_api(opengl)
         .exit_on_esc(true)
         .build()
