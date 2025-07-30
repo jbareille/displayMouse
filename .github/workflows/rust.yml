@@ -21,10 +21,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build
+    - name: Build musl
       run: |
         rustup target add x86_64-unknown-linux-musl 
         RUSTFLAGS='-C link-arg=-s' cargo build --release --target x86_64-unknown-linux-musl
+    - name: Build gnu
+      run: |
+        rustup target add x86_64-unknown-linux-gnu 
+        RUSTFLAGS='-C link-arg=-s' cargo build --release --target x86_64-unknown-linux-gnu
     - name: Run tests
       run: cargo test --verbose
     - name: Release
@@ -35,3 +39,4 @@ jobs:
         files: |
           Release.txt
           target/x86_64-unknown-linux-musl/release/displayMouse
+          target/x86_64-unknown-linux-gnu/release/displayMouse
