@@ -29,6 +29,15 @@ jobs:
       run: |
         rustup target add x86_64-unknown-linux-gnu 
         RUSTFLAGS='-C link-arg=-s' cargo build --release --target x86_64-unknown-linux-gnu
+        set -x
+        echo "**********************************"
+        ls -l target/x86_64-unknown-linux-gnu/release/
+        echo "**********************************"
+        ls -l target/x86_64-unknown-linux-gnu
+        echo "**********************************"
+        ls -l target
+        echo "**********************************"
+
     - name: Run tests
       run: cargo test --verbose
     - name: Release
