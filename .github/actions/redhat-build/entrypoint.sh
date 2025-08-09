@@ -3,7 +3,7 @@
 echo "Building for Red Hat Linux"
 
 echo "Installing Rust environment"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 echo "Installing dependencies"
 rustup target add x86_64-unknown-linux-gnu
