@@ -17,7 +17,10 @@ ls -l
 RUSTFLAGS='-C link-arg=-s' cargo build --release --target x86_64-unknown-linux-gnu
 
 echo "Copy the gnu binary to a different name for release generation"
-cp target/x86_64-unknown-linux-gnu/release/displayMouse target/x86_64-unknown-linux-gnu/release/displayMouse-gnu
+cp target/x86_64-unknown-linux-gnu/release/displayMouse displayMouse-gnu
+
+echo "Cleaning up"
+cargo clean
 
 time=$(date)
 echo "time=$time" >> $GITHUB_OUTPUT
