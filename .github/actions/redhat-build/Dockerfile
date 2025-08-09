@@ -1,11 +1,7 @@
 # Container image that runs your code
 FROM redhat/ubi8:8.10
 
-RUN cat /etc/redhat-release
-
-RUN dnf provides '*bin/cc'
-
-RUN dnf group install "Development Tools"
+RUN dnf install gcc-8.5.0-26.el8_10.x86_64
 
 RUN dnf install llvm-toolset
 
