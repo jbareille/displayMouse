@@ -9,6 +9,10 @@ echo "Installing dependencies"
 rustup target add x86_64-unknown-linux-gnu
 
 echo "Building the project"
+cd /github/workspace || exit
+
+ls -l
+
 RUSTFLAGS='-C link-arg=-s' cargo build --release --target x86_64-unknown-linux-gnu
 
 echo "Copy the gnu binary to a different name for release generation"
