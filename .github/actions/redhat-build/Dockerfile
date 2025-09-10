@@ -1,8 +1,8 @@
 # Container image that runs your code
 FROM redhat/ubi8:8.10
 
-RUN dnf install gcc-8.5.0-26.el8_10.x86_64 -y && \
-    dnf install gcc-c++-8.5.0-26.el8_10.x86_64 -y && \
+RUN dnf install gcc -y && \
+    dnf install gcc-c++ -y && \
     dnf install make -y && \
     dnf install cmake -y && \
     dnf install git -y && \
