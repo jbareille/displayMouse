@@ -2,6 +2,8 @@ extern crate piston_window;
 
 use piston_window::*;
 use std::time::Instant;
+use piston_window::color::BLUE;
+use piston_window::math::Matrix2d;
 
 pub struct App {
     mouse_pos: [f64; 2],  // Mouse position.
@@ -16,12 +18,32 @@ impl App {
     fn render(&mut self, glyphs: &mut Glyphs, window: &mut PistonWindow, e: Event) {
         const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
         const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
+        const BLACK: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
+
+
+        window.set_title(format!("{:?}", window.draw_size()));
+        window.set_max_fps(500);
 
         window.draw_2d(&e, |c, g, d| {
 
             clear([1.0, 1.0, 1.0, 1.0], g);
 
-            let transform = c.transform.trans(0.0, 0.0).rot_deg(0.0);
+            let transform: Matrix2d = c.transform.clone();
+
+            rectangle(
+                BLUE,
+                rectangle::rectangle_by_corners(0.0,0.0, 10.0, 10.0),
+                transform,
+                g,
+            );
+
+            rectangle(
+                BLACK,
+                rectangle::rectangle_by_corners(95.0,95.0, 105.0, 105.0),
+                transform,
+                g,
+            );
+
             let length = 3.0;
             let width = 20.0;
             let x0 = self.mouse_pos[0] - width / 2.0;
@@ -63,6 +85,17 @@ impl App {
                 .draw(&txt, glyphs, &c.draw_state, transform.trans(10.0, 200.0), g)
                 .unwrap();
 
+
+
+            // Afficher les MPS.
+            let mouse_text = format!("Mouse position: {:.0} {:.0}", self.mouse_pos[0], self.mouse_pos[1]);
+            let txt = mouse_text.as_str();
+
+            Text::new_color([0.0, 0.0, 0.0, 1.0], 20)
+                .draw(&txt, glyphs, &c.draw_state, transform.trans(10.0, 300.0), g)
+                .unwrap();
+
+            println!("fps: {}, mps: {}, mouse :{:0} {:0}", self.fps, self.mps, self.mouse_pos[0], self.mouse_pos[1]);
             glyphs.factory.encoder.flush(d);
         });
     }
@@ -96,10 +129,12 @@ impl App {
 fn main() {
     let opengl = OpenGL::V3_2;
 
-    let mut window: PistonWindow = WindowSettings::new("displayMouse", [600, 600])
+    let mut window: PistonWindow = WindowSettings::new("displayMouse", [1200, 600])
         .graphics_api(opengl)
         .exit_on_esc(true)
-        .resizable(true)
+        .resizable(false)
+        .samples(0)
+        .vsync(false)
         .transparent(true)
         .build()
         .unwrap();
@@ -113,7 +148,7 @@ fn main() {
         mps: 0,
     };
 
-    let mut glyphs = window.load_font("assets/FiraSans-Regular.ttf").unwrap();
+    let mut glyphs = window.load_font("assets/FiraSans-Regular.ttf").expect("Error while loading font from assets/FiraSans-Regular.ttf. Please create the assets folder and add the font file in it.");
     let mut events = Events::new(EventSettings::new());
 
     while let Some(e) = events.next(&mut window) {
