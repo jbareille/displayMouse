@@ -12,6 +12,7 @@ pub struct App {
     mouse: u64,
     fps: u8,
     mps: u8, // Mouse position updates per second.
+    // time_ms: u64,
 }
 
 impl App {
@@ -33,6 +34,13 @@ impl App {
             rectangle(
                 BLUE,
                 rectangle::rectangle_by_corners(0.0,0.0, 10.0, 10.0),
+                transform,
+                g,
+            );
+
+            rectangle(
+                BLACK,
+                rectangle::rectangle_by_corners(50.0,50.0, 150.0, 70.0),
                 transform,
                 g,
             );
@@ -85,7 +93,13 @@ impl App {
                 .draw(&txt, glyphs, &c.draw_state, transform.trans(10.0, 200.0), g)
                 .unwrap();
 
+            // // Afficher l'heure en millisecondes.
+            // let time_text = format!("Time: {:.2}", self.time_ms);
+            // let txt = time_text.as_str();
 
+            // Text::new_color([0.0, 0.0, 0.0, 1.0], 20)
+            //     .draw(&txt, glyphs, &c.draw_state, transform.trans(10.0, 200.0), g)
+            //     .unwrap();
 
             // Afficher les MPS.
             let mouse_text = format!("Mouse position: {:.0} {:.0}", self.mouse_pos[0], self.mouse_pos[1]);
@@ -95,7 +109,8 @@ impl App {
                 .draw(&txt, glyphs, &c.draw_state, transform.trans(10.0, 300.0), g)
                 .unwrap();
 
-            println!("fps: {}, mps: {}, mouse :{:0} {:0}", self.fps, self.mps, self.mouse_pos[0], self.mouse_pos[1]);
+            // println!("fps: {}, mps: {}, mouse: {:0} {:0}, time: {}", self.fps, self.mps, self.mouse_pos[0], self.mouse_pos[1], self.time_text);
+            println!("fps: {}, mps: {}, mouse: {:0} {:0}", self.fps, self.mps, self.mouse_pos[0], self.mouse_pos[1]);
             glyphs.factory.encoder.flush(d);
         });
     }
@@ -146,6 +161,7 @@ fn main() {
         fps: 0,
         mouse: 0,
         mps: 0,
+        // time_ms: 0nstant::now(),
     };
 
     let mut glyphs = window.load_font("assets/FiraSans-Regular.ttf").expect("Error while loading font from assets/FiraSans-Regular.ttf. Please create the assets folder and add the font file in it.");
