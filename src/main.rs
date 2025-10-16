@@ -4,6 +4,7 @@ use piston_window::*;
 use std::time::Instant;
 use piston_window::color::BLUE;
 use piston_window::math::Matrix2d;
+use sdl2::rwops::RWops;
 
 pub struct App {
     mouse_pos: [f64; 2],  // Mouse position.
@@ -164,13 +165,16 @@ fn main() {
         // time_ms: 0nstant::now(),
     };
 
-    let mut glyphs = window.load_font("assets/FiraSans-Regular.ttf").expect("Error while loading font from assets/FiraSans-Regular.ttf. Please create the assets folder and add the font file in it.");
+    let font: &[u8] = include_bytes!("../assets/FiraSans-Regular.ttf");
+    let font: &Font = &ttf_context
+        .load_font_from_rwops(RWops::from_bytes(font)?, 128)?;
+
     let mut events = Events::new(EventSettings::new());
 
     while let Some(e) = events.next(&mut window) {
         let current_event = e.clone();
         if let Some(_args) = e.render_args() {
-            app.render(&mut glyphs, &mut window, current_event);
+            app.render(&mut font, &mut window, current_event);
         }
 
         if let Some(mouse_pos) = e.mouse_cursor_args() {
