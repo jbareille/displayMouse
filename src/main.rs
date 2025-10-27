@@ -4,6 +4,20 @@ use piston_window::*;
 use std::time::Instant;
 use piston_window::color::BLUE;
 use piston_window::math::Matrix2d;
+use clap::Parser;
+
+/// displayMouse parameters
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    /// Width of displayMouse window
+    #[arg(short, long, default_value_t = 1200)]
+    width: u16,
+
+    /// Height of displayMouse window
+    #[arg(short, long, default_value_t = 600)]
+    height: u16,
+}
 
 pub struct App {
     mouse_pos: [f64; 2],  // Mouse position.
@@ -142,9 +156,10 @@ impl App {
 }
 
 fn main() {
+    let args = Args::parse();
     let opengl = OpenGL::V3_2;
 
-    let mut window: PistonWindow = WindowSettings::new("displayMouse", [1200, 600])
+    let mut window: PistonWindow = WindowSettings::new("displayMouse", [args.width, args.height])
         .graphics_api(opengl)
         .exit_on_esc(true)
         .resizable(false)
